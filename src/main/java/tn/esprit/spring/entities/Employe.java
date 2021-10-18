@@ -58,7 +58,11 @@ public class Employe implements Serializable {
 	//@JsonBackReference
 	@OneToMany(mappedBy="employe")
 	private List<Timesheet> timesheets;
-	
+
+	public Employe() {
+		super();
+	}
+
 	public Employe(String nom, String prenom, String email, boolean isActif, Role role) {
 		this.nom = nom;
 		this.prenom = prenom;

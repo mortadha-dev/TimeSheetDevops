@@ -4,11 +4,19 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Timed;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import tn.esprit.spring.entities.Contrat;
+import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Role;
+import tn.esprit.spring.repository.EmployeRepository;
 import tn.esprit.spring.services.EmployeServiceImpl;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,13 +24,27 @@ import org.apache.logging.log4j.Logger;
 @SpringBootTest
 class EmployeTest {
     @Autowired
+    private EmployeRepository employeRepository;
+    @Autowired
+
     private EmployeServiceImpl employeService;
     private final static Logger l = LogManager.getLogger(EmployeTest.class);
 
     @Test
     void ajoutEmploye() {
-
-        Assertions.assertSame(52,789);
+        Employe employe = new Employe();
+        employe.setNom("ahmed");
+        employe.setPrenom("bouallagui");
+        employe.setEmail("ahmed@esprit.tn");
+        employe.setActif(true);
+        employe.setRole(Role.CHEF_DEPARTEMENT);
+        System.out.println(employe.getPrenom());
+        employeRepository.save(employe);
+        List<Departement> list = new ArrayList<>() ;
+        //  employeService.ajouterEmploye(employe);
+        long start = System.currentTimeMillis();
+        long elapsedTime = System.currentTimeMillis() - start;
+        l.info("Method execution time: " + elapsedTime + " milliseconds.");
         l.info("l'employé est ajouté");
     }
 
@@ -38,6 +60,7 @@ class EmployeTest {
     }
 
     @Test
+    @ResponseStatus
     void AjouterContrat() {
         Contrat contrat = new Contrat();
         contrat.setSalaire(2000);

@@ -29,7 +29,6 @@ import tn.esprit.spring.services.ITimesheetService;
 @RestController
 public class RestControlEmploye {
 
-	Employe e = new Employe();
 	@Autowired
 	IEmployeService iemployeservice;
 	@Autowired

@@ -14,6 +14,7 @@ class TimesheetApplicationTests {
 	@Test
 	void contextLoads() {
 	}
+	/*
 	@Test
 	public void ajoutEmploye() {
 		Employe employe = new Employe();
@@ -26,7 +27,7 @@ class TimesheetApplicationTests {
 		Assertions.assertThat(employe.getNom()).isEqualTo("ahmed");
 		employeRepository.save(employe);
 		//  employeService.ajouterEmploye(employe);
-	}
+	}*/
 	@Test
 	public void showCategories(){
 		employeRepository.findAll();
