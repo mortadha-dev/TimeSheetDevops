@@ -4,19 +4,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Timed;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import tn.esprit.spring.entities.Contrat;
-import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Role;
 import tn.esprit.spring.repository.EmployeRepository;
 import tn.esprit.spring.services.EmployeServiceImpl;
-
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,7 +34,7 @@ class EmployeTest {
         employe.setRole(Role.CHEF_DEPARTEMENT);
         System.out.println(employe.getPrenom());
         employeRepository.save(employe);
-        List<Departement> list = new ArrayList<>() ;
+        Assertions.assertEquals(5,10);
         //  employeService.ajouterEmploye(employe);
         long start = System.currentTimeMillis();
         long elapsedTime = System.currentTimeMillis() - start;
