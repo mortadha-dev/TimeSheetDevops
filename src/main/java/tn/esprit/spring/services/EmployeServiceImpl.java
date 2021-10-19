@@ -39,7 +39,7 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public void mettreAjourEmailByEmployeId(String email, int employeId) {
-		Employe employe = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(message + employeId));
+		var employe = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(message + employeId));
 		employe.setEmail(email);
 		employeRepository.save(employe);
 
@@ -47,8 +47,8 @@ public class EmployeServiceImpl implements IEmployeService {
 
 	@Transactional	
 	public void affecterEmployeADepartement(int employeId, int depId) {
-		Departement depManagedEntity = deptRepoistory.findById(depId).orElseThrow(() -> new ResourceNotFoundException("departement not found with this id : " + depId));
-		Employe employeManagedEntity = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(message + employeId));
+		var depManagedEntity = deptRepoistory.findById(depId).orElseThrow(() -> new ResourceNotFoundException("departement not found with this id : " + depId));
+		var employeManagedEntity = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(message + employeId));
 
 		if(depManagedEntity.getEmployes() == null){
 
@@ -65,7 +65,7 @@ public class EmployeServiceImpl implements IEmployeService {
 	@Transactional
 	public void desaffecterEmployeDuDepartement(int employeId, int depId)
 	{
-		Departement dep = deptRepoistory.findById(depId).orElseThrow(() -> new ResourceNotFoundException("department not found with this id : " + depId));
+		var dep = deptRepoistory.findById(depId).orElseThrow(() -> new ResourceNotFoundException("department not found with this id : " + depId));
 
 		int employeNb = dep.getEmployes().size();
 		for(var index = 0; index < employeNb; index++){
@@ -82,8 +82,8 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public void affecterContratAEmploye(int contratId, int employeId) {
-		Contrat contratManagedEntity = contratRepoistory.findById(contratId).orElseThrow(() -> new ResourceNotFoundException("contrat not found with this id : " + contratId));
-		Employe employeManagedEntity = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(message + employeId));
+		var contratManagedEntity = contratRepoistory.findById(contratId).orElseThrow(() -> new ResourceNotFoundException("contrat not found with this id : " + contratId));
+		var employeManagedEntity = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(message + employeId));
 
 		contratManagedEntity.setEmploye(employeManagedEntity);
 		contratRepoistory.save(contratManagedEntity);
@@ -91,12 +91,12 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public String getEmployePrenomById(int employeId) {
-		Employe employeManagedEntity = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(message + employeId));
+		var employeManagedEntity = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(message + employeId));
 		return employeManagedEntity.getPrenom();
 	}
 	public void deleteEmployeById(int employeId)
 	{
-		Employe employe = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(message + employeId));
+		var employe = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(message + employeId));
 
 		//Desaffecter l'employe de tous les departements
 		//c'est le bout master qui permet de mettre a jour
@@ -109,7 +109,7 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public void deleteContratById(int contratId) {
-		Contrat contratManagedEntity = contratRepoistory.findById(contratId).orElseThrow(() -> new ResourceNotFoundException("contrat not found with this id : " + contratId));
+		var contratManagedEntity = contratRepoistory.findById(contratId).orElseThrow(() -> new ResourceNotFoundException("contrat not found with this id : " + contratId));
 		contratRepoistory.delete(contratManagedEntity);
 
 	}

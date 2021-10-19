@@ -1,18 +1,20 @@
 package tn.esprit.spring;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.Assert;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import tn.esprit.spring.entities.Contrat;
-import tn.esprit.spring.entities.Employe;
-import tn.esprit.spring.entities.Role;
+import tn.esprit.spring.entities.*;
+import tn.esprit.spring.repository.ContratRepository;
 import tn.esprit.spring.repository.EmployeRepository;
 import tn.esprit.spring.services.EmployeServiceImpl;
+
 import java.util.Date;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tn.esprit.spring.services.EntrepriseServiceImpl;
 
 
 @SpringBootTest
@@ -20,22 +22,17 @@ class EmployeTest {
     @Autowired
     private EmployeRepository employeRepository;
     @Autowired
-
     private EmployeServiceImpl employeService;
+    @Autowired
+    private ContratRepository contratRepository;
+    @Autowired
+    EntrepriseServiceImpl entrepriseService;
     private final static Logger l = LogManager.getLogger(EmployeTest.class);
 
     @Test
     void ajoutEmploye() {
-        Employe employe = new Employe();
-        employe.setNom("ahmed");
-        employe.setPrenom("bouallagui");
-        employe.setEmail("ahmed@esprit.tn");
-        employe.setActif(true);
-        employe.setRole(Role.CHEF_DEPARTEMENT);
-        System.out.println(employe.getPrenom());
-        employeRepository.save(employe);
-        Assertions.assertEquals(5,10);
-        //  employeService.ajouterEmploye(employe);
+        var employe = new Employe("ahmed", "bouallagui", "ahmed@esprit.tn", true, Role.CHEF_DEPARTEMENT);
+        employeService.ajouterEmploye(employe);
         long start = System.currentTimeMillis();
         long elapsedTime = System.currentTimeMillis() - start;
         l.info("Method execution time: " + elapsedTime + " milliseconds.");
@@ -43,82 +40,98 @@ class EmployeTest {
     }
 
     @Test
-    void getAllEmployeNamesJPQL() {
-        l.info("les noms des employés sont : " + employeService.getAllEmployeNamesJPQL());
-    }
-    //simple modification   
-
-    @Test
     void getNombreEmploye() {
         int nombre = employeService.getNombreEmployeJPQL();
+        var employe = new Employe("ahmed", "bouallagui", "ahmed@esprit.tn", true, Role.CHEF_DEPARTEMENT);
+        employeService.ajouterEmploye(employe);
+        int secondNombre = employeService.getNombreEmployeJPQL();
+        Assert.assertNotEquals(nombre, secondNombre);
         l.info("le nombre des employés est : " + nombre);
     }
 
     @Test
-    @ResponseStatus
     void AjouterContrat() {
-        Contrat contrat = new Contrat();
-        contrat.setSalaire(2000);
         Date date = new Date();
-        contrat.setDateDebut(date);
-        contrat.setReference(12);
-        contrat.setTypeContrat("CDI");
-        Assertions.assertEquals(2000, contrat.getSalaire());
+        Contrat contrat = new Contrat(date, "CDI", 20000);
+        int resultat = employeService.ajouterContrat(contrat);
+        Assert.assertNotNull(resultat);
         employeService.ajouterContrat(contrat);
         l.info(" le contrat est bien ajouté");
     }
 
     @Test
     void affecterContratAEmploye() {
-        int contratid = 1;
-        int employeid = 1;
-        employeService.affecterContratAEmploye(contratid, employeid);
-        l.info("le contrat d'id" + contratid + "est bien affecté à l'employé d'id: " + employeid);
+        var employe = new Employe("ahmed", "bouallagui", "ahmed@esprit.tn", true, Role.CHEF_DEPARTEMENT);
+        Date date = new Date();
+        var contrat = new Contrat(date, "CDD", 1000);
+        employeService.ajouterEmploye(employe);
+        employeService.ajouterContrat(contrat);
+        employeService.affecterContratAEmploye(contrat.getReference(), employe.getId());
+        l.info("le contrat d'id" + contrat.getReference() + "est bien affecté à l'employé d'id: " + employe.getId());
     }
 
     @Test
     void affecterEmployeADepartement() {
-        int employeId = 1;
-        int departmentId = 1;
-        employeService.affecterEmployeADepartement(employeId, departmentId);
-        l.info("l'employé qui a l'id: " + employeId + " est affecté au département avec l'id : " + departmentId);
+        var employe = new Employe("ahmed", "bouallagui", "ahmed@esprit.tn", true, Role.CHEF_DEPARTEMENT);
+        employeService.ajouterEmploye(employe);
+        var departement = new Departement("testing");
+        entrepriseService.ajouterDepartement(departement);
+        employeService.affecterEmployeADepartement(employe.getId(), departement.getId());
+        l.info("l'employé qui a l'id: " + employe.getId() + " est affecté au département avec l'id : " + departement.getId());
     }
+
     @Test
-    void getSalaireByEmployeIdJPQL(){
-        int employeId = 1 ;
-     float salaire=   employeService.getSalaireByEmployeIdJPQL(employeId) ;
-        l.info("l'employé d'id: "+ employeId+ " a un salaire de "+ salaire);
+    void getSalaireByEmployeIdJPQL() {
+        int employeId = 1;
+        float salaire = employeService.getSalaireByEmployeIdJPQL(employeId);
+        l.info("l'employé d'id: " + employeId + " a un salaire de " + salaire);
 
     }
 
     @Test
     void DesaffecterEmployeDuDepartement() {
-        int employeId = 1;
-        int departmentId = 1;
-        employeService.desaffecterEmployeDuDepartement(employeId, departmentId);
-        l.info("l'employé qui a l'id : " + employeId + " est désaffecté du département qui a l'id : " + departmentId);
+        var employe = new Employe("ahmed", "bouallagui", "ahmed@esprit.tn", true, Role.CHEF_DEPARTEMENT);
+        employeService.ajouterEmploye(employe);
+        var entreprise = new Entreprise("premiére entreprise", "raison");
+        var departement = new Departement("Geo");
+        departement.setEntreprise(entreprise);
+        entrepriseService.ajouterEntreprise(entreprise);
+        entrepriseService.ajouterDepartement(departement);
+        employeService.desaffecterEmployeDuDepartement(employe.getId(), departement.getId());
+        l.info("l'employé qui a l'id : " + employe.getId() + " est désaffecté du département qui a l'id : " + departement.getId());
     }
 
     @Test
+    @Order(8)
     void DeleteContrat() {
-        employeService.deleteContratById(1);
+        Date date = new Date();
+        var contrat = new Contrat(date, "CDD", 1000);
+        employeService.ajouterContrat(contrat);
+        boolean existBeforeDelete = contratRepository.findById(contrat.getReference()).isPresent();
+        employeService.deleteContratById(contrat.getReference());
+        boolean existAfterDelete = contratRepository.findById(contrat.getReference()).isPresent();
+        Assert.assertTrue(existBeforeDelete);
+        Assert.assertFalse(existAfterDelete);
         l.info("Le contrat est supprimé");
     }
 
     @Test
     void DeleteEmploye() {
-        employeService.deleteEmployeById(1);
-        l.info("l'employé est supprimé");
+        var employe = new Employe("ahmed", "bouallagui", "ahmed@esprit.tn", true, Role.CHEF_DEPARTEMENT);
+        employeService.ajouterEmploye(employe);
+        boolean existBeforeDelete = employeRepository.findById(employe.getId()).isPresent();
+        Assert.assertTrue(existBeforeDelete);
+        employeService.deleteEmployeById(employe.getId());
+        boolean existAfterDelete = employeRepository.findById(employe.getId()).isPresent();
+        Assert.assertFalse(existAfterDelete);
+        l.info("L'employé est supprimé");
     }
 
     @Test
     void DeleteAllContrat() {
         employeService.deleteAllContratJPQL();
-
+        Assert.assertEquals("[]", contratRepository.findAll().toString());
         l.info("tous les contrats sont supprimés");
-
     }
-
-
 }
 

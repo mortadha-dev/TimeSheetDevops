@@ -14,33 +14,33 @@ import tn.esprit.spring.entities.Entreprise;
 
 public interface EmployeRepository extends CrudRepository<Employe, Integer>  {
 	
-	
+
 	@Query("SELECT count(*) FROM Employe")
-    public int countemp();
+     int countemp();
 	
     @Query("SELECT nom FROM Employe")
-    public List<String> employeNames();
+     List<String> employeNames();
     
     @Query("Select "
 			+ "DISTINCT emp from Employe emp "
 			+ "join emp.departements dps "
 			+ "join dps.entreprise entrep "
 			+ "where entrep=:entreprise")
-    public List<Employe> getAllEmployeByEntreprisec(@Param("entreprise") Entreprise entreprise);
+     List<Employe> getAllEmployeByEntreprisec(@Param("entreprise") Entreprise entreprise);
     
     @Modifying
     @Transactional
     @Query("UPDATE Employe e SET e.email=:email1 where e.id=:employeId")
-    public void mettreAjourEmailByEmployeIdJPQL(@Param("email1")String email, @Param("employeId")int employeId);
+     void mettreAjourEmailByEmployeIdJPQL(@Param("email1")String email, @Param("employeId")int employeId);
 
     
     @Modifying
     @Transactional
     @Query("DELETE from Contrat")
-    public void deleteAllContratJPQL();
+     void deleteAllContratJPQL();
     
     @Query("select c.salaire from Contrat c join c.employe e where e.id=:employeId")
-    public float getSalaireByEmployeIdJPQL(@Param("employeId")int employeId);
+     float getSalaireByEmployeIdJPQL(@Param("employeId")int employeId);
     
     
     @Query("Select "
@@ -48,7 +48,7 @@ public interface EmployeRepository extends CrudRepository<Employe, Integer>  {
 			+ "join cont.employe emp "
 			+ "join emp.departements deps "
 			+ "where deps.id=:depId")
-    public Double getSalaireMoyenByDepartementId(@Param("depId")int departementId);
+     Double getSalaireMoyenByDepartementId(@Param("depId")int departementId);
 	
     		
    

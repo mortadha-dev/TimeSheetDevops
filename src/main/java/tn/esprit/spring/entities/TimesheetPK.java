@@ -42,8 +42,8 @@ public class TimesheetPK implements Serializable {
 	//Utiliser l'IDE pour générer le equal et le hashcode
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
+		final var prime = 31;
+		var result = 1;
 		result = prime * result + ((dateDebut == null) ? 0 : dateDebut.hashCode());
 		result = prime * result + ((dateFin == null) ? 0 : dateFin.hashCode());
 		result = prime * result + idEmploye;
@@ -72,9 +72,7 @@ public class TimesheetPK implements Serializable {
 			return false;
 		if (idEmploye != other.idEmploye)
 			return false;
-		if (idMission != other.idMission)
-			return false;
-		return true;
+		return idMission == other.idMission;
 	}
 
 	public void setIdMission(int idMission) {
