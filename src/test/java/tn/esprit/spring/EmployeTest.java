@@ -1,6 +1,7 @@
 package tn.esprit.spring;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ class EmployeTest {
         var employe = new Employe("ahmed", "bouallagui", "ahmed@esprit.tn", true, Role.CHEF_DEPARTEMENT);
         employeService.ajouterEmploye(employe);
         int secondNombre = employeService.getNombreEmployeJPQL();
-        Assert.assertNotEquals(nombre, secondNombre);
+        Assertions.assertNotEquals(nombre, secondNombre);
         l.info("le nombre des employés est : " + nombre);
     }
 
@@ -54,8 +55,7 @@ class EmployeTest {
         Date date = new Date();
         Contrat contrat = new Contrat(date, "CDI", 20000);
         int resultat = employeService.ajouterContrat(contrat);
-        Assert.assertNotNull(resultat);
-        employeService.ajouterContrat(contrat);
+        Assertions.assertEquals(resultat, contrat.getReference() );
         l.info(" le contrat est bien ajouté");
     }
 
@@ -82,10 +82,16 @@ class EmployeTest {
 
     @Test
     void getSalaireByEmployeIdJPQL() {
-        int employeId = 1;
-        float salaire = employeService.getSalaireByEmployeIdJPQL(employeId);
-        l.info("l'employé d'id: " + employeId + " a un salaire de " + salaire);
-
+        var employe = new Employe("ahmed", "bouallagui", "ahmed@esprit.tn", true, Role.CHEF_DEPARTEMENT);
+        employeService.ajouterEmploye(employe);
+        Date date = new Date();
+        var contrat = new Contrat(date, "CDD", 1000);
+        employeService.ajouterContrat(contrat);
+        employeService.affecterContratAEmploye(contrat.getReference(), employe.getId());
+        float salaire1=0 ;
+        float salaire = employeService.getSalaireByEmployeIdJPQL(employe.getId());
+        Assertions.assertNotEquals(salaire, salaire1);
+        l.info("l'employé d'id: " + employe.getId() + " a un salaire de " + salaire);
     }
 
     @Test
