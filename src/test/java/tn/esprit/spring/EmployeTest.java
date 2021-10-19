@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 @SpringBootTest
 class EmployeTest {
+    /*
     @Autowired
     private EmployeServiceImpl employeService;
     private final static Logger l = LogManager.getLogger(EmployeTest.class);
@@ -101,6 +102,6 @@ class EmployeTest {
 
     }
 
-
+*/
 }
 

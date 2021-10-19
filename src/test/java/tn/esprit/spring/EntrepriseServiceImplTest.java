@@ -23,6 +23,7 @@ import org.apache.logging.log4j.Logger;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class EntrepriseServiceImplTest {
+
 	@Autowired
     private EntrepriseServiceImpl entrepriseService;
     private final static Logger l = LogManager.getLogger(EntrepriseServiceImplTest.class);

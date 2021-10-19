@@ -14,6 +14,7 @@ import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.entities.Mission;
 import tn.esprit.spring.entities.Timesheet;
+import tn.esprit.spring.exceptions.ResourceNotFoundException;
 import tn.esprit.spring.repository.ContratRepository;
 import tn.esprit.spring.repository.DepartementRepository;
 import tn.esprit.spring.repository.EmployeRepository;
@@ -31,23 +32,23 @@ public class EmployeServiceImpl implements IEmployeService {
 	@Autowired
 	TimesheetRepository timesheetRepository;
 
+	String message="employee not found with this id : " ;
+
 	public void ajouterEmploye(Employe employe) {
+		employeRepository.save(employe);
+	}
+
+	public void mettreAjourEmailByEmployeId(String email, int employeId) {
+		var employe = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(message + employeId));
+		employe.setEmail(email);
 		employeRepository.save(employe);
 
 	}
 
-	public void mettreAjourEmailByEmployeId(String email, int employeId) {
-		Employe employe = employeRepository.findById(employeId).get();
-
-			employe.setEmail(email);
-			employeRepository.save(employe);
-
-	}
-
-	@Transactional	
+	@Transactional
 	public void affecterEmployeADepartement(int employeId, int depId) {
-		Departement depManagedEntity = deptRepoistory.findById(depId).get();
-		Employe employeManagedEntity = employeRepository.findById(employeId).get();
+		var depManagedEntity = deptRepoistory.findById(depId).orElseThrow(() -> new ResourceNotFoundException("departement not found with this id : " + depId));
+		var employeManagedEntity = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(message + employeId));
 
 		if(depManagedEntity.getEmployes() == null){
 
@@ -64,10 +65,10 @@ public class EmployeServiceImpl implements IEmployeService {
 	@Transactional
 	public void desaffecterEmployeDuDepartement(int employeId, int depId)
 	{
-		Departement dep = deptRepoistory.findById(depId).get();
+		var dep = deptRepoistory.findById(depId).orElseThrow(() -> new ResourceNotFoundException("department not found with this id : " + depId));
 
 		int employeNb = dep.getEmployes().size();
-		for(int index = 0; index < employeNb; index++){
+		for(var index = 0; index < employeNb; index++){
 			if(dep.getEmployes().get(index).getId() == employeId){
 				dep.getEmployes().remove(index);
 				break;//a revoir
@@ -81,21 +82,21 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public void affecterContratAEmploye(int contratId, int employeId) {
-		Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
-		Employe employeManagedEntity = employeRepository.findById(employeId).get();
+		var contratManagedEntity = contratRepoistory.findById(contratId).orElseThrow(() -> new ResourceNotFoundException("contrat not found with this id : " + contratId));
+		var employeManagedEntity = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(message + employeId));
 
 		contratManagedEntity.setEmploye(employeManagedEntity);
 		contratRepoistory.save(contratManagedEntity);
-		
+
 	}
 
 	public String getEmployePrenomById(int employeId) {
-		Employe employeManagedEntity = employeRepository.findById(employeId).get();
+		var employeManagedEntity = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(message + employeId));
 		return employeManagedEntity.getPrenom();
 	}
 	public void deleteEmployeById(int employeId)
 	{
-		Employe employe = employeRepository.findById(employeId).get();
+		var employe = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(message + employeId));
 
 		//Desaffecter l'employe de tous les departements
 		//c'est le bout master qui permet de mettre a jour
@@ -108,7 +109,7 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public void deleteContratById(int contratId) {
-		Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
+		var contratManagedEntity = contratRepoistory.findById(contratId).orElseThrow(() -> new ResourceNotFoundException("contrat not found with this id : " + contratId));
 		contratRepoistory.delete(contratManagedEntity);
 
 	}
@@ -116,12 +117,12 @@ public class EmployeServiceImpl implements IEmployeService {
 	public int getNombreEmployeJPQL() {
 		return employeRepository.countemp();
 	}
-	
+
 	public List<String> getAllEmployeNamesJPQL() {
 		return employeRepository.employeNames();
 
 	}
-	
+
 	public List<Employe> getAllEmployeByEntreprise(Entreprise entreprise) {
 		return employeRepository.getAllEmployeByEntreprisec(entreprise);
 	}
@@ -131,9 +132,9 @@ public class EmployeServiceImpl implements IEmployeService {
 
 	}
 	public void deleteAllContratJPQL() {
-         employeRepository.deleteAllContratJPQL();
+		employeRepository.deleteAllContratJPQL();
 	}
-	
+
 	public float getSalaireByEmployeIdJPQL(int employeId) {
 		return employeRepository.getSalaireByEmployeIdJPQL(employeId);
 	}
@@ -141,14 +142,14 @@ public class EmployeServiceImpl implements IEmployeService {
 	public Double getSalaireMoyenByDepartementId(int departementId) {
 		return employeRepository.getSalaireMoyenByDepartementId(departementId);
 	}
-	
+
 	public List<Timesheet> getTimesheetsByMissionAndDate(Employe employe, Mission mission, Date dateDebut,
-			Date dateFin) {
+														 Date dateFin) {
 		return timesheetRepository.getTimesheetsByMissionAndDate(employe, mission, dateDebut, dateFin);
 	}
 
 	public List<Employe> getAllEmployes() {
-				return (List<Employe>) employeRepository.findAll();
+		return (List<Employe>) employeRepository.findAll();
 	}
 
 }
