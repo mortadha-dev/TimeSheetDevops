@@ -46,6 +46,7 @@ class EmployeTest {
     void getAllEmployeNamesJPQL() {
         l.info("les noms des employés sont : " + employeService.getAllEmployeNamesJPQL());
     }
+    //simple modification   
 
     @Test
     void getNombreEmploye() {
