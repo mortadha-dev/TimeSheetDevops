@@ -15,6 +15,7 @@ import tn.esprit.spring.entities.Mission;
 import tn.esprit.spring.entities.Role;
 import tn.esprit.spring.entities.Timesheet;
 import tn.esprit.spring.entities.TimesheetPK;
+import tn.esprit.spring.exceptions.ResourceNotFoundException;
 import tn.esprit.spring.repository.DepartementRepository;
 import tn.esprit.spring.repository.EmployeRepository;
 import tn.esprit.spring.repository.MissionRepository;
@@ -45,8 +46,10 @@ public class TimesheetServiceImpl implements ITimesheetService {
 	}
     
 	public void affecterMissionADepartement(int missionId, int depId) {
-		Mission mission = missionRepository.findById(missionId).get();
-		Departement dep = deptRepoistory.findById(depId).get();
+		Mission mission = missionRepository.findById(missionId).orElseThrow(() -> new ResourceNotFoundException("mission not found with this id : " + missionId));
+
+		Departement dep = deptRepoistory.findById(depId).orElseThrow(() -> new ResourceNotFoundException("department not found with this id : " + missionId));
+
 
 		mission.setDepartement(dep);
 		missionRepository.save(mission);
@@ -70,8 +73,10 @@ public class TimesheetServiceImpl implements ITimesheetService {
 	
 	public void validerTimesheet(int missionId, int employeId, Date dateDebut, Date dateFin, int validateurId) {
 		l.info("In valider Timesheet");
-		Employe validateur = employeRepository.findById(validateurId).get();
-		Mission mission = missionRepository.findById(missionId).get();
+		var validateur = employeRepository.findById(validateurId).orElseThrow(() -> new ResourceNotFoundException("validator not found with this id : " + missionId));
+
+		var mission = missionRepository.findById(missionId).orElseThrow(() -> new ResourceNotFoundException("mission not found with this id : " + missionId));
+
 		//verifier s'il est un chef de departement (interet des enum)
 		if(!validateur.getRole().equals(Role.CHEF_DEPARTEMENT)){
 			l.info("l'employe doit etre chef de departement pour valider une feuille de temps !");
@@ -91,12 +96,12 @@ public class TimesheetServiceImpl implements ITimesheetService {
 		}
 //
 		TimesheetPK timesheetPK = new TimesheetPK(missionId, employeId, dateDebut, dateFin);
-		Timesheet timesheet =timesheetRepository.findBytimesheetPK(timesheetPK);
+		var timesheet =timesheetRepository.findBytimesheetPK(timesheetPK);
 		timesheet.setValide(true);
 		
 		//Comment Lire une date de la base de données
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		l.info("dateDebut : " + dateFormat.format(timesheet.getTimesheetPK().getDateDebut()));
+		var dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		System.getLogger("dateDebut : " + dateFormat.format(timesheet.getTimesheetPK().getDateDebut()));
 		
 	}
 

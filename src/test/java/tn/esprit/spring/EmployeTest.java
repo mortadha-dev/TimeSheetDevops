@@ -15,26 +15,29 @@ import org.apache.logging.log4j.Logger;
 
 @SpringBootTest
 class EmployeTest {
-    /*
+
     @Autowired
     private EmployeServiceImpl employeService;
     private final static Logger l = LogManager.getLogger(EmployeTest.class);
 
     @Test
     void ajoutEmploye() {
-
-        Assertions.assertSame(52,789);
+        Employe e1 = new Employe( "Mayssa", "Mayssa","maissa@gmail.com",true, Role.ADMINISTRATEUR);
+        Assertions.assertNotNull(e1);
+        employeService.ajouterEmploye(e1);
         l.info("l'employé est ajouté");
     }
 
     @Test
     void getAllEmployeNamesJPQL() {
+        Assertions.assertNotNull(employeService.getAllEmployeNamesJPQL());
         l.info("les noms des employés sont : " + employeService.getAllEmployeNamesJPQL());
     }
 
     @Test
     void getNombreEmploye() {
         int nombre = employeService.getNombreEmployeJPQL();
+        Assertions.assertEquals(0,nombre);
         l.info("le nombre des employés est : " + nombre);
     }
 
@@ -69,7 +72,7 @@ class EmployeTest {
     @Test
     void getSalaireByEmployeIdJPQL(){
         int employeId = 1 ;
-     float salaire=   employeService.getSalaireByEmployeIdJPQL(employeId) ;
+     float salaire=   employeService.getSalaireByEmployeIdJPQL(employeId);
         l.info("l'employé d'id: "+ employeId+ " a un salaire de "+ salaire);
 
     }
@@ -97,11 +100,10 @@ class EmployeTest {
     @Test
     void DeleteAllContrat() {
         employeService.deleteAllContratJPQL();
-
         l.info("tous les contrats sont supprimés");
 
     }
 
-*/
+
 }
 

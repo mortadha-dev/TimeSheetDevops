@@ -16,11 +16,16 @@ import tn.esprit.spring.repository.EntrepriseRepository;
 @Service
 public class EntrepriseServiceImpl implements IEntrepriseService {
 
-	@Autowired
+
     EntrepriseRepository entrepriseRepoistory;
-	@Autowired
 	DepartementRepository deptRepoistory;
-	
+
+	@Autowired
+	public EntrepriseServiceImpl(EntrepriseRepository entrepriseRepoistory,DepartementRepository deptRepoistory){
+		this.entrepriseRepoistory=entrepriseRepoistory;
+        this.deptRepoistory=deptRepoistory;
+	}
+
 	public int ajouterEntreprise(Entreprise entreprise) {
 		entrepriseRepoistory.save(entreprise);
 		return entreprise.getId();
@@ -37,8 +42,8 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 				// ==> c'est l'objet departement(le master) qui va mettre a jour l'association
 				//Rappel : la classe qui contient mappedBy represente le bout Slave
 				//Rappel : Dans une relation oneToMany le mappedBy doit etre du cote one.
-				Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).orElseThrow(()-> new ResourceNotFoundException("entreprise not found with this id "));
-				Departement depManagedEntity = deptRepoistory.findById(depId).orElseThrow(()-> new ResourceNotFoundException("depatement not found with this id "));
+				Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).orElseThrow(()-> new ResourceNotFoundException("entreprise not found  "));
+				Departement depManagedEntity = deptRepoistory.findById(depId).orElseThrow(()-> new ResourceNotFoundException("depatement not found  "));
 				
 				depManagedEntity.setEntreprise(entrepriseManagedEntity);
 				deptRepoistory.save(depManagedEntity);
@@ -46,7 +51,7 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	}
 	
 	public List<String> getAllDepartementsNamesByEntreprise(int entrepriseId) {
-		var entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
+		var entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).orElseThrow(()-> new ResourceNotFoundException("entreprise not found "));
 		List<String> depNames = new ArrayList<>();
 		for(Departement dep : entrepriseManagedEntity.getDepartements()){
 			depNames.add(dep.getName());
@@ -57,17 +62,17 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 	@Transactional
 	public void deleteEntrepriseById(int entrepriseId) {
-		entrepriseRepoistory.delete(entrepriseRepoistory.findById(entrepriseId).get());	
+		entrepriseRepoistory.delete(entrepriseRepoistory.findById(entrepriseId).orElseThrow(()-> new ResourceNotFoundException("entreprise not found with this id : " + entrepriseId)));
 	}
 
 	@Transactional
 	public void deleteDepartementById(int depId) {
-		deptRepoistory.delete(deptRepoistory.findById(depId).get());	
+		deptRepoistory.delete(deptRepoistory.findById(depId).orElseThrow(()-> new ResourceNotFoundException("department not found with this id : " + depId)));
 	}
 
 
 	public Entreprise getEntrepriseById(int entrepriseId) {
-		return entrepriseRepoistory.findById(entrepriseId).get();	
+		return entrepriseRepoistory.findById(entrepriseId).orElseThrow(()-> new ResourceNotFoundException("entreprise not found with this id : " + entrepriseId));
 	}
 
 }

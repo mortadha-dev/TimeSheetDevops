@@ -5,24 +5,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import tn.esprit.spring.entities.Contrat;
-import tn.esprit.spring.entities.Employe;
-import tn.esprit.spring.entities.Entreprise;
-import tn.esprit.spring.entities.Role;
-import tn.esprit.spring.services.EmployeServiceImpl;
 import tn.esprit.spring.services.EntrepriseServiceImpl;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThat;
-
-import java.util.Date;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class EntrepriseServiceImplTest {
+ class EntrepriseServiceImplTest {
 
 	@Autowired
     private EntrepriseServiceImpl entrepriseService;
@@ -30,6 +21,7 @@ public class EntrepriseServiceImplTest {
 
 	 @Test
 	    void DeleteEntreprise() {
+
 	        entrepriseService.deleteEntrepriseById(1);
 	        l.info("L'entreprise est supprimé");
 	    }
@@ -47,8 +39,8 @@ public class EntrepriseServiceImplTest {
 	        l.info("l'entreprise est ajouté");
 	    }
 	    @Test
-	    public void getEntrepriseByIdA() {
-	    Entreprise Entreprise= entrepriseService.getEntrepriseById(1);
+	     void getEntrepriseByIdA() {
+	    var Entreprise= entrepriseService.getEntrepriseById(1);
 	    assertThat(Entreprise.getId()).isEqualTo(1);
         l.info("l'entreprise est");
 
@@ -56,7 +48,7 @@ public class EntrepriseServiceImplTest {
 	    @Test
 	    void getEntrepriseById() {
 	        int entrepriseId = 1;
-	        l.info("l'estreprise est : " + entrepriseService.getEntrepriseById(entrepriseId));
+	        l.info("l'entreprise est : " + entrepriseService.getEntrepriseById(entrepriseId));
 
 	    }
 }
