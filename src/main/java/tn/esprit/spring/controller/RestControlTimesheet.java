@@ -27,10 +27,8 @@ public class RestControlTimesheet {
 	IEntrepriseService ientrepriseservice;
 	@Autowired
 	ITimesheetService itimesheetservice;
-	
-	// http://localhost:8081/SpringMVC/servlet/ajouterMission
-	@PostMapping("/ajouterMission")
-	@ResponseBody
+
+	@PostMapping("/ajouterMission" )
 	public int ajouterMission(@RequestBody Mission mission) {
 		itimesheetservice.ajouterMission(mission);
 		return mission.getId();
@@ -42,8 +40,6 @@ public class RestControlTimesheet {
 		itimesheetservice.affecterMissionADepartement(missionId, depId);
 
 	}
-	
-	// http://localhost:8081/SpringMVC/servlet/ajouterTimesheet
 
 	@PostMapping("/ajouterTimesheet/idmission/idemp/dated/datef")
 	@ResponseBody

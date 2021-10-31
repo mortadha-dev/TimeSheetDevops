@@ -1,26 +1,90 @@
 package tn.esprit.spring;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.Assert;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import tn.esprit.spring.repository.ContratRepository;
-import tn.esprit.spring.services.EmployeServiceImpl;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import tn.esprit.spring.entities.*;
+import tn.esprit.spring.repository.DepartementRepository;
+import tn.esprit.spring.repository.EmployeRepository;
+import tn.esprit.spring.repository.MissionRepository;
+import tn.esprit.spring.repository.TimesheetRepository;
+import tn.esprit.spring.services.TimesheetServiceImpl;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 
 @SpringBootTest
 class TimesheetApplicationTests {
-    @Autowired
-    private EmployeServiceImpl employeService;
-    private final static Logger l = LogManager.getLogger(EmployeTest.class);
-    @Autowired
-    private ContratRepository contratRepository;
-    @Test
-    void contextLoads() {
-        employeService.deleteAllContratJPQL();
-        Assert.assertEquals("[]", contratRepository.findAll().toString());
-        l.info("tous les contrats sont supprimés");
 
-    }
+	@Autowired
+	TimesheetServiceImpl timesheetService;
+	@Autowired
+	DepartementRepository departementRepository;
+	@Autowired
+	EmployeRepository employeRepository;
+	@Autowired
+	MissionRepository missionRepository;
+	@Autowired
+	TimesheetRepository timesheetRepository;
+	private final static Logger l = LogManager.getLogger(TimesheetApplicationTests.class);
+
+	@Test
+	void contextLoads() {
+
+	}
+
+	@Test
+	void addMission(){
+		Mission m1 = new Mission( "mission", "c ma mission");
+		Assertions.assertNotNull(m1);
+		timesheetService.ajouterMission(m1) ;
+		l.info("mission added"+ timesheetService.ajouterMission(m1));
+	}
+	@Test
+	void addDepartement(){
+		Departement d1 = new Departement( "premier department");
+		Assertions.assertNotNull(d1);
+		departementRepository.save(d1);
+		l.info("department added"+ departementRepository.save(d1));
+	}
+
+	@Test
+	void addEmploye()  {
+		Employe e1 = new Employe( "Mayssa", "Mayssa","maissa@gmail.com",true, Role.ADMINISTRATEUR);
+		Assertions.assertNotNull(e1);
+		employeRepository.save(e1);
+		l.info("user added ");
+	}
+	@Test
+	void addTimesheet() throws ParseException {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date d = dateFormat.parse("2021-10-05");
+		Date d1 = dateFormat.parse("2021-10-07");
+
+		timesheetService.ajouterTimesheet(1,1,d,d1);
+		l.info("Timesheet added ");
+	}
+
+
+
+	@Test
+	void retrieveAllTimesheets(){
+		ArrayList<Timesheet> timesheets = (ArrayList<Timesheet>) timesheetRepository.findAll();
+
+		for (Timesheet value : timesheets) {
+			l.info("timesheet"+ value);
+		}
+	}
 }
+
+
+

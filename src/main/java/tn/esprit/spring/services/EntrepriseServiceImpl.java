@@ -17,7 +17,7 @@ import tn.esprit.spring.repository.EntrepriseRepository;
 public class EntrepriseServiceImpl implements IEntrepriseService {
 
 	@Autowired
-    EntrepriseRepository entrepriseRepoistory;
+	EntrepriseRepository entrepriseRepoistory;
 	@Autowired
 	DepartementRepository deptRepoistory;
 
@@ -31,28 +31,28 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		deptRepoistory.save(dep);
 		return dep.getId();
 	}
-	
+
 	public void affecterDepartementAEntreprise(int depId, int entrepriseId) {
-		//Le bout Master de cette relation N:1 est departement  
-				//donc il faut rajouter l'entreprise a departement 
-				// ==> c'est l'objet departement(le master) qui va mettre a jour l'association
-				//Rappel : la classe qui contient mappedBy represente le bout Slave
-				//Rappel : Dans une relation oneToMany le mappedBy doit etre du cote one.
-				var entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).orElseThrow(() -> new ResourceNotFoundException(message + entrepriseId));
-				var depManagedEntity = deptRepoistory.findById(depId).orElseThrow(() -> new ResourceNotFoundException("departement not found with this id : " + entrepriseId));
-				
-				depManagedEntity.setEntreprise(entrepriseManagedEntity);
-				deptRepoistory.save(depManagedEntity);
-		
+		//Le bout Master de cette relation N:1 est departement
+		//donc il faut rajouter l'entreprise a departement
+		// ==> c'est l'objet departement(le master) qui va mettre a jour l'association
+		//Rappel : la classe qui contient mappedBy represente le bout Slave
+		//Rappel : Dans une relation oneToMany le mappedBy doit etre du cote one.
+		var entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).orElseThrow(() -> new ResourceNotFoundException(message + entrepriseId));
+		var depManagedEntity = deptRepoistory.findById(depId).orElseThrow(() -> new ResourceNotFoundException("departement not found with this id : " + entrepriseId));
+
+		depManagedEntity.setEntreprise(entrepriseManagedEntity);
+		deptRepoistory.save(depManagedEntity);
+
 	}
-	
+
 	public List<String> getAllDepartementsNamesByEntreprise(int entrepriseId) {
 		var entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).orElseThrow(() -> new ResourceNotFoundException(message + entrepriseId));
 		List<String> depNames = new ArrayList<>();
 		for(Departement dep : entrepriseManagedEntity.getDepartements()){
 			depNames.add(dep.getName());
 		}
-		
+
 		return depNames;
 	}
 
