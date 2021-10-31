@@ -48,6 +48,43 @@ pipeline {
                           
                           
                           
+                
+                
+           stage('Code Quality Check via SonarQube') {
+
+   steps {
+
+       script {
+
+       def scannerHome = tool 'sonarqube';
+
+           withSonarQubeEnv("sonarqube-container") {
+
+           bat "${tool("sonarqube")}/bin/sonar-scanner \
+
+           -Dsonar.projectKey=tn.esprit.spring:Timesheet-spring-boot-core-data-jpa-mvc-REST-1 \
+
+           -Dsonar.sources=. \
+
+           -Dsonar.css.node=. \
+
+           -Dsonar.host.url=http://localhost:9000 \
+
+           -Dsonar.login=admin"
+
+               }
+           }
+       }
+   }       
+                
+                
+    
+    
+    
+                
+                          
+                          
+                          
                           
                           
     
