@@ -45,6 +45,31 @@ pipeline {
               bat 'mvn -f pom.xml clean install -DskipTests=true'
                   }
                           }
+                            stage("publish to nexus") {
+            steps {
+              
+    
+        nexusArtifactUploader artifacts:[
+            
+            [
+                artifactId: 'Timesheet-spring-boot-core-data-jpa-mvc-REST-1',
+                classifier: '', 
+                file: 'target/Timesheet-spring-boot-core-data-jpa-mvc-REST-1-0.0.1-SNAPSHOT.jar', 
+                type: 'jar'
+                ]
+            ],
+            
+            credentialsId: 'nexus3',
+            groupId: 'tn.esprit.spring', 
+            nexusUrl: 'localhost:8081',
+            nexusVersion: 'nexus3',
+            protocol: 'http',
+            repository: 'http://localhost:8081/repository/TimeSheetApp/',
+            version: '0.0.1-SNAPSHOT'
+                   
+                
+            }
+        }
                           
                     
                           
