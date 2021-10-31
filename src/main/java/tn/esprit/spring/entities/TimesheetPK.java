@@ -44,6 +44,7 @@ public class TimesheetPK implements Serializable {
 	public int hashCode() {
 		final var prime = 31;
 		var result = 1;
+
 		result = prime * result + ((dateDebut == null) ? 0 : dateDebut.hashCode());
 		result = prime * result + ((dateFin == null) ? 0 : dateFin.hashCode());
 		result = prime * result + idEmploye;
@@ -72,7 +73,9 @@ public class TimesheetPK implements Serializable {
 			return false;
 		if (idEmploye != other.idEmploye)
 			return false;
-		return idMission == other.idMission;
+
+		return idMission != other.idMission;
+
 	}
 
 	public void setIdMission(int idMission) {

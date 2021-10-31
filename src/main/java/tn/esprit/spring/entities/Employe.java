@@ -1,5 +1,7 @@
 package tn.esprit.spring.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
@@ -12,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 @Entity
@@ -54,7 +56,6 @@ public class Employe implements Serializable {
 	private List<Timesheet> timesheets;
 
 	public Employe() {
-		super();
 	}
 
 	public Employe(String nom, String prenom, String email, boolean isActif, Role role) {
@@ -68,6 +69,7 @@ public class Employe implements Serializable {
 	public int getId() {
 		return id;
 	}
+
 
 	public void setId(int id) {
 		this.id = id;
@@ -136,6 +138,7 @@ public class Employe implements Serializable {
 	public void setTimesheets(List<Timesheet> timesheets) {
 		this.timesheets = timesheets;
 	}
+
 	
 	
 	

@@ -13,45 +13,45 @@ import tn.esprit.spring.entities.Entreprise;
 
 
 public interface EmployeRepository extends CrudRepository<Employe, Integer>  {
-	
 
-	@Query("SELECT count(*) FROM Employe")
-     int countemp();
-	
+
+    @Query("SELECT count(*) FROM Employe")
+    int countemp();
+
     @Query("SELECT nom FROM Employe")
-     List<String> employeNames();
+    List<String> employeNames();
 
-    
+
     @Query("Select "
-			+ "DISTINCT emp from Employe emp "
-			+ "join emp.departements dps "
-			+ "join dps.entreprise entrep "
-			+ "where entrep=:entreprise")
-     List<Employe> getAllEmployeByEntreprisec(@Param("entreprise") Entreprise entreprise);
-    
+            + "DISTINCT emp from Employe emp "
+            + "join emp.departements dps "
+            + "join dps.entreprise entrep "
+            + "where entrep=:entreprise")
+    List<Employe> getAllEmployeByEntreprisec(@Param("entreprise") Entreprise entreprise);
+
     @Modifying
     @Transactional
     @Query("UPDATE Employe e SET e.email=:email1 where e.id=:employeId")
-     void mettreAjourEmailByEmployeIdJPQL(@Param("email1")String email, @Param("employeId")int employeId);
+    void mettreAjourEmailByEmployeIdJPQL(@Param("email1")String email, @Param("employeId")int employeId);
 
-    
+
     @Modifying
     @Transactional
     @Query("DELETE from Contrat")
-     void deleteAllContratJPQL();
-    
+    void deleteAllContratJPQL();
+
     @Query("select c.salaire from Contrat c join c.employe e where e.id=:employeId")
-     float getSalaireByEmployeIdJPQL(@Param("employeId")int employeId);
-    
-    
+    float getSalaireByEmployeIdJPQL(@Param("employeId")int employeId);
+
+
     @Query("Select "
-			+ "DISTINCT AVG(cont.salaire) from Contrat cont "
-			+ "join cont.employe emp "
-			+ "join emp.departements deps "
-			+ "where deps.id=:depId")
-     Double getSalaireMoyenByDepartementId(@Param("depId")int departementId);
-	
-    		
-   
+            + "DISTINCT AVG(cont.salaire) from Contrat cont "
+            + "join cont.employe emp "
+            + "join emp.departements deps "
+            + "where deps.id=:depId")
+    Double getSalaireMoyenByDepartementId(@Param("depId")int departementId);
+
+
+
 
 }
