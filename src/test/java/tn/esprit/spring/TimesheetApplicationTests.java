@@ -69,21 +69,21 @@ class TimesheetApplicationTests {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date d = dateFormat.parse("2021-10-05");
 		Date d1 = dateFormat.parse("2021-10-07");
-
-		timesheetService.ajouterTimesheet(1,1,d,d1);
+		Employe e1 = new Employe( "Mayssa", "Mayssa","maissa@gmail.com",true, Role.ADMINISTRATEUR);
+		Assertions.assertNotNull(e1);
+		employeRepository.save(e1);
+		l.info("user added ");
+		Mission m1 = new Mission( "mission", "c ma mission");
+		Assertions.assertNotNull(m1);
+		timesheetService.ajouterMission(m1) ;
+		l.info("mission added"+ timesheetService.ajouterMission(m1));
+		timesheetService.ajouterTimesheet(m1.getId(),e1.getId(),d,d1);
 		l.info("Timesheet added ");
 	}
 
 
 
-	@Test
-	void retrieveAllTimesheets(){
-		ArrayList<Timesheet> timesheets = (ArrayList<Timesheet>) timesheetRepository.findAll();
 
-		for (Timesheet value : timesheets) {
-			l.info("timesheet"+ value);
-		}
-	}
 }
 
 
