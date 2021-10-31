@@ -42,7 +42,7 @@ pipeline {
 
         stage('Build stage') {
             steps {
-              bat 'mvn -f pom.xml clean install'
+              bat 'mvn -f pom.xml clean install -DskipTests=true'
                   }
                           }
                           
