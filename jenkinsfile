@@ -72,9 +72,12 @@ pipeline {
         }
         
           stage('SonarQube analysis') {
+           steps {
+          
     withSonarQubeEnv('sonarqube1') 
     {
       bat 'mvn sonar:sonar'
+    }
     }
   }
         
