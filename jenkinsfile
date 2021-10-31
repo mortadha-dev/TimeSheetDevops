@@ -60,15 +60,15 @@ pipeline {
 
            withSonarQubeEnv("sonarqube-container") {
 
-           bat "${tool("sonarqube")}/bin/sonar-scanner \
+           bat "${tool("sonarqube")}/bin/sonar-scanner 
 
-           -Dsonar.projectKey=tn.esprit.spring:Timesheet-spring-boot-core-data-jpa-mvc-REST-1 \
+           -Dsonar.projectKey=tn.esprit.spring:Timesheet-spring-boot-core-data-jpa-mvc-REST-1 
 
-           -Dsonar.sources=. \
+           -Dsonar.sources=. 
 
-           -Dsonar.css.node=. \
+           -Dsonar.css.node=. 
 
-           -Dsonar.host.url=http://localhost:9000 \
+           -Dsonar.host.url=http://localhost:9000 
 
            -Dsonar.login=admin"
 
