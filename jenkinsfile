@@ -72,12 +72,9 @@ pipeline {
         }
         
           stage('SonarQube analysis') {
-    withSonarQubeEnv(credentialsId: 'f4c77bd1afd9e10a48b874efd4cff496bd7e2865', installationName: 'sonarqube1') 
+    withSonarQubeEnv('sonarqube1') 
     {
-      bat 'mvn sonar:sonar 
-      -Dsonar.projectKey=tn.esprit.spring:Timesheet-spring-boot-core-data-jpa-mvc-REST-1 
-      -Dsonar.host.url=http://localhost:9000  
-      -Dsonar.login=f4c77bd1afd9e10a48b874efd4cff496bd7e2865'
+      bat 'mvn sonar:sonar'
     }
   }
         
