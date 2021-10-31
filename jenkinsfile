@@ -5,6 +5,8 @@ pipeline {
       }
 
     stages {
+        
+        
      stage ('Initialize') {
                       steps {
                           bat '''
@@ -12,28 +14,42 @@ pipeline {
                               echo "M2_HOME = ${M2_HOME}"
                           '''
                       }
-                  }
-                     stage("clone code") {
+                         }
+                  
+                  
+     stage("clone code") {
             steps {
                 script {
                     // Let's clone the source
-                    git 'https://github.com/danielalejandrohc/cargotracker.git';
-                }
-            }
-             stage("mvn build") {
-            steps {
-                script {
-                    // If you are using Windows then you should use "bat" step
-                    // Since unit testing is out of the scope we skip them
-                    sh "mvn package -DskipTests=true"
-                }
-            }
+                    git 'https://github.com/mortadha-dev/TimeSheetDevops';
+                       }
+                  }
+                         }
+                         
+
+     stage("mvn build") {
+    steps {
+        script {
+            // If you are using Windows then you should use "bat" step
+            // Since unit testing is out of the scope we skip them
+            sh "mvn package -DskipTests=true"
         }
+    }
+}
+
+
+
+
         stage('Build stage') {
             steps {
               bat 'mvn -f pom.xml clean install'
-        }
-    }
+                  }
+                          }
+                          
+                          
+                          
+                          
+                          
     
         stage("publish to nexus") {
             steps {
@@ -81,7 +97,7 @@ pipeline {
                 }
             }
         }
-    }
+}
     post {
     always{
     cleanWs()
