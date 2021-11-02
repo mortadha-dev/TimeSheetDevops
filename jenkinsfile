@@ -16,36 +16,37 @@ pipeline {
                       }
                          }
                   
-                  
-     stage("clone code") {
-            steps {
-                script {
-                    // Let's clone the source
-                    git 'https://github.com/mortadha-dev/TimeSheetDevops';
-                       }
-                  }
-                         }
                          
-
-     stage("mvn build") {
-    steps {
+     stage("Lancer les tests unitaires") {
+      steps {
         script {
-            // If you are using Windows then you should use "bat" step
-            // Since unit testing is out of the scope we skip them
-            bat "mvn package -DskipTests=true"
+            bat "mvn test "
         }
     }
 }
 
 
 
-
-        stage('Build stage') {
+        stage('Créer le livrable sous le dossier target') {
             steps {
-              bat 'mvn -f pom.xml clean install -DskipTests=true'
+              bat 'mvn -f pom.xml clean install '
                   }
                           }
-                            stage("publish to nexus") {
+                          
+                          
+                          
+        stage('SonarQube analysis') {
+           steps {
+          
+                    withSonarQubeEnv('sonarqube1') 
+                      {
+                              bat 'mvn sonar:sonar'
+                      }
+                  }
+        }
+                          
+                          
+     stage("publish to nexus") {
             steps {
               
     
@@ -71,28 +72,6 @@ pipeline {
             }
         }
         
-          stage('SonarQube analysis') {
-           steps {
-          
-    withSonarQubeEnv('sonarqube1') 
-    {
-      bat 'mvn sonar:sonar'
-    }
-    }
-  }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-                          
-                    
                           
 }
        
