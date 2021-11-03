@@ -22,7 +22,15 @@ pipeline {
                   }
                           }
                           
-                          
+ stage('SonarQube analysis') {
+           steps {
+          
+                    withSonarQubeEnv('sonarqube') 
+                      {
+                              bat 'mvn sonar:sonar'
+                      }
+                  }
+        }                          
                           
        
                           
