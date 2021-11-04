@@ -1,1 +1,4 @@
-COPY --from=1 /app/target/spring-petclinic-1.5.1.jar /app
+FROM openjdk:11
+COPY --from=1 /app/target/${artifact} /app
+EXPOSE 8070
+CMD ["java -jar ${artifact}"]
