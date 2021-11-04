@@ -66,9 +66,10 @@ pipeline {
         
         
         stage("créer image docker") {
+        agent{ dockerfile = true }
             steps {
             script {
-            def customImage = docker.build("test-image", "./dockerfile")
+            def customImage = docker.build("test-image", "./docker")
                 customImage.inside {
                    sh 'make test'
                    echo 'hello'
