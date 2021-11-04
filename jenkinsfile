@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    triggers{
+    crontab{pollSCM('')
+    }
+    }
      tools {
         maven 'MAVEN_HOME'
       }
