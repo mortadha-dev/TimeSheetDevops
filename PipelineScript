@@ -60,8 +60,14 @@ pipeline {
                 
             }
         }
+        def customImage = docker.build("my-image:${env.BUILD_ID}")
         
-                          
+        stage("créer image docker") {
+            steps {
+    customImage.inside {
+        sh 'make test'
+    }
+}                  
 }
        
     post {
