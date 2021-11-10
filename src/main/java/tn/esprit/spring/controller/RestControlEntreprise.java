@@ -29,7 +29,6 @@ public class RestControlEntreprise {
 	@Autowired
 	ITimesheetService itimesheetservice;
 
-
 	@PostMapping("/ajouterEntreprise")
 	@ResponseBody
 	public int ajouterEntreprise(@RequestBody Entreprise ssiiConsulting) {
