@@ -84,6 +84,26 @@ pipeline {
             }
         } 
         
+        
+            stage('run the docker image in a container') { 
+            steps { 
+                script { 
+                   docker run --rm dockerImage
+                } 
+            }
+        } 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
                           
 }
        
