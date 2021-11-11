@@ -88,7 +88,7 @@ pipeline {
             stage('run the docker image in a container') { 
             steps { 
                 script { 
-                  bat 'docker run --rm mortadha123/testdocker:12'
+                  bat 'docker run --rm mortadha123/testdocker:14'
                 } 
             }
         } 
