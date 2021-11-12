@@ -11,8 +11,7 @@ pipeline {
     stages {
     
       stage ('SCM Checkout'){
-      
-      git url: 'https://github.com/mortadha-dev/TimeSheetDevops'
+        git url 'https://github.com/mortadha-dev/TimeSheetDevops'
       }
         
      stage("Lancer les tests unitaires") {
