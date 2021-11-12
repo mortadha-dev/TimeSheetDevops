@@ -68,14 +68,14 @@ pipeline {
          steps {
             script {
               docker build -t test-image ./Dockerfile
-          
+          }
          }
         }
           stage("créer image docker") {
         
             steps {
             script {
-            def customImage = docker.build("test-image", "./Dockerfile")
+            def customImage = docker.build("test-image", "./Dockerfile");
                 customImage.inside {
                    sh 'make test'
                    echo 'hello'
