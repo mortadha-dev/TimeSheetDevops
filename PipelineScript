@@ -64,6 +64,10 @@ pipeline {
             }
         }
         
+        stage('Build docker') {
+    docker build -t test-image .
+}
+        
         
         stage("créer image docker") {
         
