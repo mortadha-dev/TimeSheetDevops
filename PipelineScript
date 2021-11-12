@@ -6,6 +6,10 @@ pipeline {
      tools {
         maven 'MAVEN_HOME'
       }
+      stage ('SCM Checkout'){
+      
+      git url: 'https://github.com/mortadha-dev/TimeSheetDevops'
+      }
 
     stages {
         
