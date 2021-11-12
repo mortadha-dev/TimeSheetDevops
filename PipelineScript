@@ -67,7 +67,7 @@ pipeline {
             }
         }
         
-        stage('Build docker') {
+        stage('Build docker image') {
          steps {
             script {
            bat   'docker build -t test-image . '
@@ -75,7 +75,7 @@ pipeline {
           }
          }
         }
-        stage('Build docker') {
+        stage('push image to dockerHub') {
          steps {
             script {
           bat 'docker login -u tiss456852456852 -p tissAa###'
