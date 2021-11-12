@@ -67,7 +67,7 @@ pipeline {
         stage('Build docker') {
          steps {
             script {
-              docker build -t test-image .
+              docker build -t test-image ./Dockerfile
           
          }
         }
