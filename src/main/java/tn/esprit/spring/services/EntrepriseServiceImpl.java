@@ -47,6 +47,7 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	}
 
 	public List<String> getAllDepartementsNamesByEntreprise(int entrepriseId) {
+
 		var entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).orElseThrow(() -> new ResourceNotFoundException(message + entrepriseId));
 		List<String> depNames = new ArrayList<>();
 		for(Departement dep : entrepriseManagedEntity.getDepartements()){
