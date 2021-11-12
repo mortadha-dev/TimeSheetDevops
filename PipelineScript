@@ -70,7 +70,8 @@ pipeline {
         stage('Build docker') {
          steps {
             script {
-           bat   'docker build -t test-image  TimeSheetDevops/path/Dockerfile .'
+           bat   'docker build -f Dockerfile -t test-image  ./path/ '
+           
           }
          }
         }
