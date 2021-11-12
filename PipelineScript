@@ -71,13 +71,7 @@ pipeline {
           }
          }
         }
-          stage("créer image docker") {
-        
-            steps {
-            script {
-            def customImage = docker.build("test-image", "./Dockerfile")
-    }
-} 
+   
         
      
 
