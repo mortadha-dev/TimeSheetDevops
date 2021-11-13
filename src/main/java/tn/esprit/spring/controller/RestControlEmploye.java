@@ -125,6 +125,12 @@ public class RestControlEmploye {
 		return iemployeservice.getAllEmployeByEntreprise(entreprise);
 	}
 
+	@GetMapping(value = "getAllEmployeByDepartement/{iddepartement}")
+	@ResponseBody
+	public int getAllEmployeByDepartement(@PathVariable("iddepartement") int iddepartement) {
+		return iemployeservice.getAllEmployeByDepartement(iddepartement);
+	}
+
 	// Modifier email : http://localhost:8081/SpringMVC/servlet/mettreAjourEmailByEmployeIdJPQL/2/newemail
 	@PutMapping(value = "/mettreAjourEmailByEmployeIdJPQL/{id}/{newemail}")
 	@ResponseBody

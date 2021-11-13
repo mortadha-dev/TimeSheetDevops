@@ -6,16 +6,17 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Entreprise;
 
 
+@Repository
 public interface EmployeRepository extends CrudRepository<Employe, Integer>  {
 
 
-    @Query("SELECT count(*) FROM Employe")
+    @Query(value = "SELECT count(*) FROM Employe", nativeQuery = true)
     int countemp();
 
     @Query("SELECT nom FROM Employe")
@@ -28,6 +29,9 @@ public interface EmployeRepository extends CrudRepository<Employe, Integer>  {
             + "join dps.entreprise entrep "
             + "where entrep=:entreprise")
     List<Employe> getAllEmployeByEntreprisec(@Param("entreprise") Entreprise entreprise);
+
+    @Query( value = "SELECT COUNT(employes_id) FROM departement_employes WHERE departements_id=:departement",nativeQuery = true)
+    int getAllEmployeByDepartement(@Param("departement") int departement);
 
     @Modifying
     @Transactional

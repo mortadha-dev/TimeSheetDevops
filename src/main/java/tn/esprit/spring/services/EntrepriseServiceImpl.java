@@ -71,4 +71,9 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		return entrepriseRepoistory.findById(entrepriseId).orElseThrow(() -> new ResourceNotFoundException(message + entrepriseId));
 	}
 
+	@Override
+	public Departement getDepartementById(int departementId) {
+		return deptRepoistory.findById(departementId).orElseThrow(() -> new ResourceNotFoundException(message + departementId));
+	}
+
 }

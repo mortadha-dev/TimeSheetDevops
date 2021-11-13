@@ -127,6 +127,11 @@ public class EmployeServiceImpl implements IEmployeService {
 		return employeRepository.getAllEmployeByEntreprisec(entreprise);
 	}
 
+	@Override
+	public int getAllEmployeByDepartement(int departementid) {
+		return  employeRepository.getAllEmployeByDepartement(departementid);
+	}
+
 	public void mettreAjourEmailByEmployeIdJPQL(String email, int employeId) {
 		employeRepository.mettreAjourEmailByEmployeIdJPQL(email, employeId);
 

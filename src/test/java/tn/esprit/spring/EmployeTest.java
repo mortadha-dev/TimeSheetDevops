@@ -65,8 +65,11 @@ class EmployeTest {
         Date date = new Date();
         var contrat = new Contrat(date, "CDD", 1000);
         employeService.ajouterEmploye(employe);
+        float primesalaire=  employeService.getSalaireByEmployeIdJPQL(employe.getId());
         employeService.ajouterContrat(contrat);
         employeService.affecterContratAEmploye(contrat.getReference(), employe.getId());
+        float secondsalaire=  employeService.getSalaireByEmployeIdJPQL(employe.getId());
+        Assertions.assertNotEquals(primesalaire, secondsalaire);
         l.info("le contrat d'id" + contrat.getReference() + "est bien affecté à l'employé d'id: " + employe.getId());
     }
 
@@ -76,7 +79,10 @@ class EmployeTest {
         employeService.ajouterEmploye(employe);
         var departement = new Departement("testing");
         entrepriseService.ajouterDepartement(departement);
+        int nombreEmployees = employeService.getAllEmployeByDepartement(departement.getId()) ;
         employeService.affecterEmployeADepartement(employe.getId(), departement.getId());
+        int nombreEmployeesAfterAdding = employeService.getAllEmployeByDepartement(departement.getId()) ;
+        Assertions.assertNotEquals(nombreEmployees, nombreEmployeesAfterAdding);
         l.info("l'employé qui a l'id: " + employe.getId() + " est affecté au département avec l'id : " + departement.getId());
     }
 
@@ -103,7 +109,11 @@ class EmployeTest {
         departement.setEntreprise(entreprise);
         entrepriseService.ajouterEntreprise(entreprise);
         entrepriseService.ajouterDepartement(departement);
+        employeService.affecterEmployeADepartement(employe.getId(), departement.getId());
+        int nombreEmployees = employeService.getAllEmployeByDepartement(departement.getId()) ;
         employeService.desaffecterEmployeDuDepartement(employe.getId(), departement.getId());
+        int nombreEmployeesAfterDesaff = employeService.getAllEmployeByDepartement(departement.getId()) ;
+        Assertions.assertNotEquals(nombreEmployees, nombreEmployeesAfterDesaff);
         l.info("l'employé qui a l'id : " + employe.getId() + " est désaffecté du département qui a l'id : " + departement.getId());
     }
 
