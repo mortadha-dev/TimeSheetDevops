@@ -62,14 +62,13 @@ class EmployeTest {
     @Test
     void affecterContratAEmploye() {
         var employe = new Employe("ahmed", "bouallagui", "ahmed@esprit.tn", true, Role.CHEF_DEPARTEMENT);
+        employeService.ajouterEmploye(employe);
         Date date = new Date();
         var contrat = new Contrat(date, "CDD", 1000);
-        employeService.ajouterEmploye(employe);
-        float primesalaire=  employeService.getSalaireByEmployeIdJPQL(employe.getId());
         employeService.ajouterContrat(contrat);
         employeService.affecterContratAEmploye(contrat.getReference(), employe.getId());
         float secondsalaire=  employeService.getSalaireByEmployeIdJPQL(employe.getId());
-        Assertions.assertNotEquals(primesalaire, secondsalaire);
+        Assertions.assertNotEquals(0, secondsalaire);
         l.info("le contrat d'id" + contrat.getReference() + "est bien affecté à l'employé d'id: " + employe.getId());
     }
 
