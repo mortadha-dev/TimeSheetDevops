@@ -1,0 +1,109 @@
+pipeline {
+    agent any
+     tools {
+        maven 'MAVEN_HOME'
+      }
+
+    stages {
+        
+        
+     stage ('Initialize') {
+                      steps {
+                          bat '''
+                              echo "PATH = ${PATH}"
+                              echo "M2_HOME = ${M2_HOME}"
+                          '''
+                      }
+                         }
+                  
+                  
+     stage("clone code") {
+            steps {
+                script {
+                    // Let's clone the source
+                    git 'https://github.com/mortadha-dev/TimeSheetDevops';
+                       }
+                  }
+                         }
+                         
+
+     stage("mvn build") {
+    steps {
+        script {
+            // If you are using Windows then you should use "bat" step
+            // Since unit testing is out of the scope we skip them
+            bat "mvn package -DskipTests=true"
+        }
+    }
+}
+
+
+
+
+        stage('Build stage') {
+            steps {
+              bat 'mvn -f pom.xml clean install -DskipTests=true'
+                  }
+                          }
+                            stage("publish to nexus") {
+            steps {
+              
+    
+        nexusArtifactUploader artifacts:[
+            
+            [
+                artifactId: 'Timesheet-spring-boot-core-data-jpa-mvc-REST-1',
+                classifier: '', 
+                file: 'target/Timesheet-spring-boot-core-data-jpa-mvc-REST-1-0.0.1-SNAPSHOT.jar', 
+                type: 'jar'
+                ]
+            ],
+            
+            credentialsId: 'nexus3',
+            groupId: 'tn.esprit.spring', 
+            nexusUrl: 'localhost:8081',
+            nexusVersion: 'nexus3',
+            protocol: 'http',
+            repository: 'TimeSheetApp',
+            version: '0.0.1-SNAPSHOT'
+                   
+                
+            }
+        }
+        
+          stage('SonarQube analysis') {
+           steps {
+          
+    withSonarQubeEnv('sonarqube1') 
+    {
+      bat 'mvn sonar:sonar'
+    }
+    }
+  }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+                          
+                    
+                          
+}
+       
+    post {
+    always{
+    cleanWs()
+    }
+     failure {  
+             mail bcc: '', body: "<b>Example</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: Project name -> ${env.JOB_NAME}", to: "mortadha.bouallagui1@esprit.tn";  
+         }
+    }
+
+
+    }
