@@ -31,16 +31,16 @@ public class RestControlEmploye {
 
 	@PostMapping("/ajouterEmployer")
 	@ResponseBody
-	public Employe ajouterEmploye(@RequestBody EmployeDTO employeDTO)
+	public EmployeDTO ajouterEmploye(@RequestBody EmployeDTO employeDTO)
 	{
 		var employe = new Employe() ;
-		employe.setNom(employeDTO.getFirstname());
-		employe.setPrenom(employeDTO.getLastname());
-		employe.setEmail(employeDTO.getAdresseemail());
+		employe.setNom(employeDTO.getNomDTO());
+		employe.setPrenom(employeDTO.getPrenomDTO());
+		employe.setEmail(employeDTO.getEmailDTO());
 		employe.setActif(true);
-		employe.setRole(employeDTO.getRole());
+		employe.setRole(employeDTO.getRoleDTO());
 		iemployeservice.ajouterEmploye(employe);
-		return employe;
+		return employeDTO;
 	}
 
 	@PutMapping(value = "/modifyEmail/{id}/{newemail}")

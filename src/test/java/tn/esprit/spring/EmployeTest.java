@@ -55,7 +55,7 @@ class EmployeTest {
         Date date = new Date();
         Contrat contrat = new Contrat(date, "CDI", 20000);
         int resultat = employeService.ajouterContrat(contrat);
-        Assertions.assertEquals(resultat, contrat.getReference() );
+        Assertions.assertEquals(resultat, contrat.getReference());
         l.info(" le contrat est bien ajouté");
     }
 
@@ -67,7 +67,7 @@ class EmployeTest {
         var contrat = new Contrat(date, "CDD", 1000);
         employeService.ajouterContrat(contrat);
         employeService.affecterContratAEmploye(contrat.getReference(), employe.getId());
-        float secondsalaire=  employeService.getSalaireByEmployeIdJPQL(employe.getId());
+        float secondsalaire = employeService.getSalaireByEmployeIdJPQL(employe.getId());
         Assertions.assertNotEquals(0, secondsalaire);
         l.info("le contrat d'id" + contrat.getReference() + "est bien affecté à l'employé d'id: " + employe.getId());
     }
@@ -78,9 +78,9 @@ class EmployeTest {
         employeService.ajouterEmploye(employe);
         var departement = new Departement("testing");
         entrepriseService.ajouterDepartement(departement);
-        int nombreEmployees = employeService.getAllEmployeByDepartement(departement.getId()) ;
+        int nombreEmployees = employeService.getAllEmployeByDepartement(departement.getId());
         employeService.affecterEmployeADepartement(employe.getId(), departement.getId());
-        int nombreEmployeesAfterAdding = employeService.getAllEmployeByDepartement(departement.getId()) ;
+        int nombreEmployeesAfterAdding = employeService.getAllEmployeByDepartement(departement.getId());
         Assertions.assertNotEquals(nombreEmployees, nombreEmployeesAfterAdding);
         l.info("l'employé qui a l'id: " + employe.getId() + " est affecté au département avec l'id : " + departement.getId());
     }
@@ -93,7 +93,7 @@ class EmployeTest {
         var contrat = new Contrat(date, "CDD", 1000);
         employeService.ajouterContrat(contrat);
         employeService.affecterContratAEmploye(contrat.getReference(), employe.getId());
-        float salaire1=0 ;
+        float salaire1 = 0;
         float salaire = employeService.getSalaireByEmployeIdJPQL(employe.getId());
         Assertions.assertNotEquals(salaire, salaire1);
         l.info("l'employé d'id: " + employe.getId() + " a un salaire de " + salaire);
@@ -109,9 +109,9 @@ class EmployeTest {
         entrepriseService.ajouterEntreprise(entreprise);
         entrepriseService.ajouterDepartement(departement);
         employeService.affecterEmployeADepartement(employe.getId(), departement.getId());
-        int nombreEmployees = employeService.getAllEmployeByDepartement(departement.getId()) ;
+        int nombreEmployees = employeService.getAllEmployeByDepartement(departement.getId());
         employeService.desaffecterEmployeDuDepartement(employe.getId(), departement.getId());
-        int nombreEmployeesAfterDesaff = employeService.getAllEmployeByDepartement(departement.getId()) ;
+        int nombreEmployeesAfterDesaff = employeService.getAllEmployeByDepartement(departement.getId());
         Assertions.assertNotEquals(nombreEmployees, nombreEmployeesAfterDesaff);
         l.info("l'employé qui a l'id : " + employe.getId() + " est désaffecté du département qui a l'id : " + departement.getId());
     }

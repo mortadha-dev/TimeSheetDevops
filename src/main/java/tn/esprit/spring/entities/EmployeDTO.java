@@ -7,23 +7,23 @@ import javax.persistence.Enumerated;
 public class EmployeDTO {
     private int id;
 
-    private String firstname;
+    private String prenomDTO;
 
-    private String lastname;
+    private String nomDTO;
 
-    private String adresseemail;
+    private String emailDTO;
 
-    private boolean estActif;
+    private boolean isActifDTO;
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role roleDTO;
 
-    public EmployeDTO(int id, String firstname, String lastname, String adresseemail, boolean estActif, Role role) {
+    public EmployeDTO(int id, String prenomDTO, String nomDTO, String emailDTO, boolean isActifDTO, Role roleDTO) {
         this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.adresseemail = adresseemail;
-        this.estActif = estActif;
-        this.role = role;
+        this.prenomDTO = prenomDTO;
+        this.nomDTO = nomDTO;
+        this.emailDTO = emailDTO;
+        this.isActifDTO = isActifDTO;
+        this.roleDTO = roleDTO;
     }
 
     public int getId() {
@@ -34,43 +34,43 @@ public class EmployeDTO {
         this.id = id;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getPrenomDTO() {
+        return prenomDTO;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setPrenomDTO(String prenomDTO) {
+        this.prenomDTO = prenomDTO;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getNomDTO() {
+        return nomDTO;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setNomDTO(String nomDTO) {
+        this.nomDTO = nomDTO;
     }
 
-    public String getAdresseemail() {
-        return adresseemail;
+    public String getEmailDTO() {
+        return emailDTO;
     }
 
-    public void setAdresseemail(String adresseemail) {
-        this.adresseemail = adresseemail;
+    public void setEmailDTO(String emailDTO) {
+        this.emailDTO = emailDTO;
     }
 
-    public boolean isEstActif() {
-        return estActif;
+    public boolean isActifDTO() {
+        return isActifDTO;
     }
 
-    public void setEstActif(boolean estActif) {
-        this.estActif = estActif;
+    public void setActifDTO(boolean actifDTO) {
+        isActifDTO = actifDTO;
     }
 
-    public Role getRole() {
-        return role;
+    public Role getRoleDTO() {
+        return roleDTO;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleDTO(Role roleDTO) {
+        this.roleDTO = roleDTO;
     }
 }

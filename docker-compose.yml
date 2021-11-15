@@ -1,24 +1,25 @@
 version: "2"
 services:
- db:
+ database:
    image: mysql:latest
    environment:
-     - MYSQL_ROOT_PASSWORD=rootpassword
-     - MYSQL_DATABASE=rtoudha
+     - MYSQL_DATABASE=mortadhadatabse
      - MYSQL_USER=mortadha
      - MYSQL_PASSWORD=mortadha
+     - MYSQL_ROOT_PASSWORD=rootpassword
    ports:
      - 3366:3306
  web:
-   image: mortadha.jar:latest
+   image: mortadha123/timesheetdevops:29
    depends_on:
-     - db
+     - database
    ports:
-     - 8099:8081
+     - 8088:8088
    environment:
-     - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/rtoudha?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
-     - SPRING_DATASOURCE_USERNAME=mortadha
-     - DATABASE_USER=mortadha
-     - SPRING_DATASOURCE_PASSWORD=mortadha
-     - DATABASE_NAME=rtoudha
+     - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/mortadhadatabse?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
+     - DATABASE_NAME=mortadhadatabse
      - DATABASE_PORT=3306
+     - DATABASE_USER=mortadha
+     - SPRING_DATASOURCE_USERNAME=mortadha
+     - SPRING_DATASOURCE_PASSWORD=mortadha
+
