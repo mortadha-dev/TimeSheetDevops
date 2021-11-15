@@ -22,4 +22,7 @@ services:
      - DATABASE_USER=mortadha
      - SPRING_DATASOURCE_USERNAME=mortadha
      - SPRING_DATASOURCE_PASSWORD=mortadha
-
+ grafana:
+    image: grafana/grafana:latest
+    ports:
+    - 3000:3000
