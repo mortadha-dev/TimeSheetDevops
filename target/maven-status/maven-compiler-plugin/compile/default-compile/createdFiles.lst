@@ -13,6 +13,7 @@ tn\esprit\spring\entities\Mission.class
 tn\esprit\spring\entities\TimesheetPK.class
 tn\esprit\spring\repository\ContratRepository.class
 tn\esprit\spring\services\EntrepriseServiceImpl.class
+tn\esprit\spring\entities\ContratDTO.class
 tn\esprit\spring\entities\Contrat.class
 tn\esprit\spring\entities\Entreprise.class
 tn\esprit\spring\services\ITimesheetService.class

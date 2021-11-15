@@ -10,7 +10,7 @@ services:
    ports:
      - 3366:3306
  web:
-   image: mortadha123/timesheetdevops:29
+   image: mortadha123/timesheetdevops:31
    depends_on:
      - database
    ports:
