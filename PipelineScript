@@ -10,9 +10,15 @@ pipeline {
 
     stages {
     
+        stage('put jar in target folder') {
+            steps {
+              bat 'mvn -f pom.xml clean install '
+                  }
+                          }
+    
       
         
-     stage("Lancer les tests unitaires") {
+     stage("execute unit tests") {
       steps {
         script {
             bat "mvn test "
@@ -22,13 +28,9 @@ pipeline {
 
 
 
-        stage('Créer le livrable sous le dossier target') {
-            steps {
-              bat 'mvn -f pom.xml clean install '
-                  }
-                          }
+    
                           
- stage('SonarQube analysis') {
+ stage('Quality code analysis') {
            steps {
           
                     withSonarQubeEnv('sonarqube') 
@@ -55,12 +57,12 @@ pipeline {
                 ]
             ],
             
-            credentialsId: 'nexus3',
-            groupId: 'tn.esprit.spring', 
-            nexusUrl: 'localhost:8081',
             nexusVersion: 'nexus3',
+            nexusUrl: 'localhost:8081',
             protocol: 'http',
+            credentialsId: 'nexus3',
             repository: 'timesheet',
+            groupId: 'tn.esprit.spring',
             version: '0.0.1-SNAPSHOT'
                    
                 
@@ -70,7 +72,7 @@ pipeline {
         stage('Build docker image') {
          steps {
             script {
-           bat   'docker build -t test-image . '
+           bat   'docker build -t timesheet-image + ":$BUILD_NUMBER" . '
            
           }
          }
