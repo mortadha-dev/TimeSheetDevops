@@ -3,6 +3,7 @@ package tn.esprit.spring.controller;
 import java.util.Date;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import tn.esprit.spring.entities.Contrat;
-import tn.esprit.spring.entities.Employe;
-import tn.esprit.spring.entities.Mission;
-import tn.esprit.spring.entities.Timesheet;
+import tn.esprit.spring.entities.*;
 import tn.esprit.spring.services.IEmployeService;
 import tn.esprit.spring.services.IEntrepriseService;
 import tn.esprit.spring.services.ITimesheetService;
@@ -31,11 +29,16 @@ public class RestControlEmploye {
 	@Autowired
 	ITimesheetService itimesheetservice;
 
-
 	@PostMapping("/ajouterEmployer")
 	@ResponseBody
-	public Employe ajouterEmploye(@RequestBody Employe employe)
+	public Employe ajouterEmploye(@RequestBody EmployeDTO employeDTO)
 	{
+		var employe = new Employe() ;
+		employe.setNom(employeDTO.getFirstname());
+		employe.setPrenom(employeDTO.getLastname());
+		employe.setEmail(employeDTO.getAdresseemail());
+		employe.setActif(true);
+		employe.setRole(employeDTO.getRole());
 		iemployeservice.ajouterEmploye(employe);
 		return employe;
 	}
@@ -64,7 +67,11 @@ public class RestControlEmploye {
 
 	@PostMapping("/ajouterContrat")
 	@ResponseBody
-	public int ajouterContrat(@RequestBody Contrat contrat) {
+	public int ajouterContrat(@RequestBody ContratDTO contratDTO) {
+		var contrat = new Contrat();
+		contrat.setDateDebut(contratDTO.getDateDebutDTO());
+		contrat.setTypeContrat(contratDTO.getTypeContratDTO());
+		contrat.setSalaire(contratDTO.getSalaireDTO());
 		iemployeservice.ajouterContrat(contrat);
 		return contrat.getReference();
 	}
