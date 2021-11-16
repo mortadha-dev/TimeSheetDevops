@@ -1,0 +1,94 @@
+pipeline {
+    agent any
+    triggers {
+        pollSCM('* * * * *')
+    }
+     tools {
+        maven 'MAVEN_HOME'
+      }
+
+    stages {
+        
+     stage("Lancer les tests unitaires") {
+      steps {
+        script {
+            bat "mvn test "
+        }
+    }
+}
+
+
+
+        stage('Créer le livrable sous le dossier target') {
+            steps {
+              bat 'mvn -f pom.xml clean install '
+                  }
+                          }
+                          
+ stage('SonarQube analysis') {
+           steps {
+          
+                    withSonarQubeEnv('sonarqube') 
+                      {
+                              bat 'mvn sonar:sonar'
+                      }
+                  }
+        }                          
+                          
+       
+                          
+                          
+     stage("publish to nexus") {
+            steps {
+              
+    
+        nexusArtifactUploader artifacts:[
+            
+            [
+                artifactId: 'Timesheet-spring-boot-core-data-jpa-mvc-REST-1',
+                classifier: '', 
+                file: 'target/Timesheet-spring-boot-core-data-jpa-mvc-REST-1-0.0.1-SNAPSHOT.jar', 
+                type: 'jar'
+                ]
+            ],
+            
+            credentialsId: 'nexus3',
+            groupId: 'tn.esprit.spring', 
+            nexusUrl: 'localhost:8081',
+            nexusVersion: 'nexus3',
+            protocol: 'http',
+            repository: 'timesheet',
+            version: '0.0.1-SNAPSHOT'
+                   
+                
+            }
+        }
+        
+        
+        stage("créer image docker") {
+        
+            steps {
+            script {
+            def customImage = docker.build("test-image", "./Dockerfile")
+                customImage.inside {
+                   sh 'make test'
+                   echo 'hello'
+        }
+    }
+}
+
+}
+
+}
+       
+    post {
+    always{
+    cleanWs()
+    }
+     failure {  
+             mail bcc: '', body: "<b>Example</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: Project name -> ${env.JOB_NAME}", to: "boujmil.tayssir1@esprit.tn";  
+         }
+    }
+
+
+    }
