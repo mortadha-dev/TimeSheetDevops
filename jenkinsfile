@@ -50,9 +50,9 @@ pipeline {
         stage('SonarQube') {
            steps {
           
-                    withSonarQubeEnv('sonarqube') 
+                    withSonarQubeEnv('sonar') 
                       {
-                              bat 'mvn sonarqube:sonarqube'
+                              bat 'mvn sonar:sonar'
                       }
                   }
         }
