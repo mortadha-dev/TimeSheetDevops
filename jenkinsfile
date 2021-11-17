@@ -1,6 +1,8 @@
 pipeline {
     agent any
- 
+ tools{
+ maven 'MAVEN_HOME'
+ }
 
     stages {
         
@@ -8,5 +10,10 @@ pipeline {
       steps {
         script {
             bat "mvn test "
+        }
+        stage('package') {
+            steps {
+                bat 'mvn package'
+            }
         }
    }}}}
