@@ -52,7 +52,7 @@ pipeline {
           
                     withSonarQubeEnv('sonarqube') 
                       {
-                              bat 'mvn sonar:sonarqube'
+                              bat 'mvn sonarqube:sonarqube'
                       }
                   }
         }
