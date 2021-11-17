@@ -15,5 +15,31 @@ pipeline {
                 bat 'mvn package'
             }
         }
+        
+        stage("publier le livrable sous nexus") {
+            steps {
+              
+    
+        nexusArtifactUploader artifacts:[
+            
+            [
+                artifactId: 'Timesheet-spring-boot-core-data-jpa-mvc-REST-1',
+                classifier: '', 
+                file: 'target/Timesheet-spring-boot-core-data-jpa-mvc-REST-1-0.0.1-SNAPSHOT.jar', 
+                type: 'jar'
+                ]
+            ],
+            
+            credentialsId: 'nexusCredits',
+            groupId: 'tn.esprit.spring', 
+            nexusUrl: 'localhost:8081',
+            nexusVersion: 'nexus3',
+            protocol: 'http',
+            repository: 'devops',
+            version: '0.0.1-SNAPSHOT'
+                   
+                
+            }
+        }
    
    }}
