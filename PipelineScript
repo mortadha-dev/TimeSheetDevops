@@ -1,0 +1,102 @@
+pipeline {
+    agent any
+    triggers {
+        pollSCM('* * * * *')
+    }
+     tools {
+        maven 'MAVEN_HOME'
+      }
+    
+
+    stages {
+    
+        stage('put jar in target folder') {
+            steps {
+              bat 'mvn -f pom.xml clean install '
+                  }
+                          }
+    
+      
+        
+     stage("execute unit tests") {
+      steps {
+        script {
+            bat "mvn test "
+        }
+    }
+}
+
+
+
+    
+                          
+ stage('Quality code analysis') {
+           steps {
+          
+                    withSonarQubeEnv('sonarqube') 
+                      {
+                              bat 'mvn sonar:sonar'
+                      }
+                  }
+        }                          
+                          
+       
+                          
+                          
+     stage("publish to nexus") {
+            steps {
+              
+    
+        nexusArtifactUploader artifacts:[
+            
+            [
+                artifactId: 'Timesheet-spring-boot-core-data-jpa-mvc-REST-1',
+                classifier: '', 
+                file: 'target/Timesheet-spring-boot-core-data-jpa-mvc-REST-1-0.0.1-SNAPSHOT.jar', 
+                type: 'jar'
+                ]
+            ],
+            
+            nexusVersion: 'nexus3',
+            nexusUrl: 'localhost:8081',
+            protocol: 'http',
+            credentialsId: 'nexus3',
+            repository: 'timesheet',
+            groupId: 'tn.esprit.spring',
+            version: '0.0.1-SNAPSHOT'
+                   
+                
+            }
+        }
+        
+        stage('Build docker image') {
+         steps {
+            script {
+             build_id='wget -qO- jenkins_url/job/job_name/lastSuccessfulBuild/buildNumber'
+             echo $build_id
+           bat   'docker build -t timesheet-image+$build_id . '
+           
+          }
+         }
+        }
+        stage('push image to dockerHub') {
+         steps {
+            script {
+          bat 'docker login -u tiss456852456852 -p tissAa###'
+          bat 'docker push  tiss456852456852/test-image'
+   }}}
+        
+     
+}
+       
+    post {
+    always{
+    cleanWs()
+    }
+     failure {  
+             mail bcc: '', body: "<b>Example</b> <br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: Project name -> ${env.JOB_NAME}", to: "boujmil.tayssir1@esprit.tn";  
+         }
+    }
+
+
+    }
