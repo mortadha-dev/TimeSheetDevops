@@ -33,7 +33,7 @@ class EmployeTest {
     void ajoutEmploye() {
         var employe = new Employe("ahmed", "bouallagui", "ahmed@esprit.tn", true, Role.CHEF_DEPARTEMENT);
         employeService.ajouterEmploye(employe);
-        Assertions.assertNotNull(employeService.ajouterEmploye(employe));
+        Assertions.assertNotNull(employe);
         l.info("l'employé est ajouté");
     }
 
