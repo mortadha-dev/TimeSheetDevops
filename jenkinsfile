@@ -19,17 +19,11 @@
          }
      }
  }
-   stage('Créer notre image docker') {
-             steps {
-                 script {
-                     dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                 }
-             }
-         }
 
 
 
-         stage('Créer le livrable sous le dossier target') {
+
+         stage('Créer livrable sous le dossier target') {
              steps {
                bat 'mvn -f pom.xml clean install '
                    }
@@ -48,7 +42,7 @@
          }
 
 
-      stage("publier le livrable sous nexus") {
+      stage("publier livrable sous nexus") {
              steps {
 
 
@@ -73,6 +67,13 @@
 
              }
          }
+          stage('Créer image docker') {
+                      steps {
+                          script {
+                              dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                          }
+                      }
+                  }
 
              stage('publier image sous DockerHub') {
              steps {

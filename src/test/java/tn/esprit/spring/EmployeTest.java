@@ -1,5 +1,7 @@
 package tn.esprit.spring;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Order;
@@ -10,12 +12,9 @@ import tn.esprit.spring.entities.*;
 import tn.esprit.spring.repository.ContratRepository;
 import tn.esprit.spring.repository.EmployeRepository;
 import tn.esprit.spring.services.EmployeServiceImpl;
+import tn.esprit.spring.services.EntrepriseServiceImpl;
 
 import java.util.Date;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tn.esprit.spring.services.EntrepriseServiceImpl;
 
 
 @SpringBootTest
@@ -36,8 +35,8 @@ class EmployeTest {
         employeService.ajouterEmploye(employe);
         long start = System.currentTimeMillis();
         long elapsedTime = System.currentTimeMillis() - start;
-        l.info("Method execution time: " + elapsedTime + " milliseconds.");
-        l.info("l'employé est ajouté");
+        l.fatal("Method execution time: " + elapsedTime + " milliseconds.");
+        l.fatal("l'employé est ajouté");
     }
 
     @Test
