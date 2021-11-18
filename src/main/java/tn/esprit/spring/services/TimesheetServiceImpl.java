@@ -11,7 +11,6 @@ import tn.esprit.spring.repository.EmployeRepository;
 import tn.esprit.spring.repository.MissionRepository;
 import tn.esprit.spring.repository.TimesheetRepository;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -85,8 +84,6 @@ public class TimesheetServiceImpl implements ITimesheetService {
         timesheet.setValide(true);
 
         //Comment Lire une date de la base de données
-        var dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        l.info("dateDebut : " + dateFormat.format(timesheet.getTimesheetPK().getDateDebut()));
 
     }
 

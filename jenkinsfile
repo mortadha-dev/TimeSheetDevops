@@ -23,7 +23,7 @@
 
 
 
-         stage('Créer livrable sous le dossier target') {
+         stage('Mettre livrable dossier target') {
              steps {
                bat 'mvn -f pom.xml clean install '
                    }
@@ -75,7 +75,7 @@
                       }
                   }
 
-             stage('push image sous DockerHub') {
+             stage('push image to DockerHub') {
              steps {
                  script {
                      docker.withRegistry( '', registryCredential ) {
