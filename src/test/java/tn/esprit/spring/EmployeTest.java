@@ -33,10 +33,8 @@ class EmployeTest {
     void ajoutEmploye() {
         var employe = new Employe("ahmed", "bouallagui", "ahmed@esprit.tn", true, Role.CHEF_DEPARTEMENT);
         employeService.ajouterEmploye(employe);
-        long start = System.currentTimeMillis();
-        long elapsedTime = System.currentTimeMillis() - start;
-        l.fatal("Method execution time: " + elapsedTime + " milliseconds.");
-        l.fatal("l'employé est ajouté");
+        Assertions.assertNotNull(employeService.ajouterEmploye(employe));
+        l.info("l'employé est ajouté");
     }
 
     @Test
